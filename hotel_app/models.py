@@ -2,12 +2,13 @@
 # to store data entered by the user
 from datetime import timedelta
 import logging
+from django.db.models import F, ExpressionWrapper, IntegerField
 from django.core.validators import MinLengthValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
 
 def validate_title(value):
-    valid_titles = ['Mr', 'Mrs', 'Ms', 'Dr', 'Prof', 'Rev', 'Sir', 'Lady']
+    valid_titles = ['Mr', 'Miss', 'Mrs', 'Ms', 'Dr', 'Prof', 'Sir', 'Dame']
     if value not in valid_titles:
         raise ValidationError(
             f'{value} is not a valid title. Please use one of: {", ".join(valid_titles)}'
@@ -283,6 +284,7 @@ class Reservation(models.Model):
     length_of_stay = models.PositiveSmallIntegerField(
         help_text="Number of nights booked"
     )
+    end_date = models.DateField(null=True, blank=True) # this will be derived from start_of_stay and length_of_stay during save()
     status_code = models.CharField(
         max_length=2,
         choices=STATUS_CHOICES,
@@ -301,24 +303,11 @@ class Reservation(models.Model):
         help_text="Additional notes or special requests for the reservation"
     )
 
-    @property
-    def end_date(self):
-        """
-        Calculate and return the check-out date.
-
-        Returns:
-            datetime.date: The date when the guest is expected to check out,
-                         calculated as start_of_stay + length_of_stay days
-        """
-        end_date = self.start_of_stay + timedelta(days=self.length_of_stay)
-        logger.info(f"Reservation end_date property called: {end_date}")
-        return end_date
-
     def clean(self):
         """
         Validate the reservation data.
         """
-        super().clean()
+        cleaned_data = super().clean()
 
         # Validate number of guests against room capacity
         if self.room_number:
@@ -326,6 +315,33 @@ class Reservation(models.Model):
 
         # Validate payment amount
         validate_payment(self.amount_paid, self.price)
+
+        # Validate booking time to check for an overlapping reservation
+        self.validate_to_detect_overlapping_reservation()
+    
+    # Check that the reservation dates don't overlap an existing reservation
+    def validate_to_detect_overlapping_reservation(self):
+        if self.length_of_stay is None:
+            self.length_of_stay = getattr(self, 'length_of_stay', None) 
+
+        """ Prevent overlapping reservations for the same room. """
+        overlapping_reservations = Reservation.objects.filter(
+            room_number=self.room_number, # find other reservations using the same room
+            start_of_stay__lt=(self.start_of_stay + timedelta(days=self.length_of_stay)),  # Existing booking starts before this one ends
+            end_date__gt=self.start_of_stay  # Existing booking ends after this one starts
+        ).exclude(pk=self.pk)  # Exclude our own record in case we're updating our existing reservation
+
+        if overlapping_reservations.exists():
+            raise ValidationError("This room is already booked for the entered dates.")
+
+
+    def save(self, *args, **kwargs):
+        #  Automatically calculate and store end_date before saving
+        if self.start_of_stay and self.length_of_stay:
+            self.end_date = self.start_of_stay + timedelta(days=self.length_of_stay)
+
+        self.full_clean()  # Call full_clean before saving to force validation
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """
@@ -338,3 +354,6 @@ class Reservation(models.Model):
         reservation_str = f"Reservation {self.reservation_id} - {self.status_code}"
         logger.info(f"Reservation __str__ called: {reservation_str}")
         return reservation_str
+
+    
+  

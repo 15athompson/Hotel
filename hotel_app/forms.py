@@ -12,6 +12,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Guest, Room, RoomType, Reservation
 from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
 
 # create a Logger for use anywhere in this code and configure it to write info messages (or higher) to the terminal
@@ -243,14 +244,30 @@ class ReservationForm(forms.ModelForm):
         label="Notes"
     )
 
-    # override save to make sure the read-only values are also saved into the model
-    # Note: by default django doesn't save read-only/disabled values so this is necessary
-    #       to populate the database table
+    # Override clean to make sure the read-only values are also saved into the model
+    # so they can be used for validation
+    # Note: by default django seem to put read-only/disabled values in the cleaned_data
+    # so this seems a necessary step for validation
     def clean(self):
         """
         Validate the reservation data.
         """
         cleaned_data = super().clean()
+
+        if cleaned_data.get('guest') is None:
+            cleaned_data['guest'] = self.initial.get('guest')
+        if cleaned_data.get('room_number') is None:
+            cleaned_data['room_number'] = self.initial.get('room_number')
+        if cleaned_data.get('reservation_date_time') is None:
+            cleaned_data['reservation_date_time'] = self.initial.get('reservation_date_time')
+        if cleaned_data.get('start_of_stay') is None:
+            cleaned_data['start_of_stay'] = self.initial.get('start_of_stay')
+        if cleaned_data.get('length_of_stay') is None:
+            cleaned_data['length_of_stay'] = self.initial.get('length_of_stay')
+        if cleaned_data.get('price') is None:
+            cleaned_data['price'] = self.initial.get('price')
+        if cleaned_data.get('status_code') is None:
+            cleaned_data['status_code'] = self.initial.get('status_code')
 
         # Validate number of guests
         number_of_guests = cleaned_data.get('number_of_guests')
@@ -416,6 +433,7 @@ class RoomTypeForm(forms.ModelForm):
             logger.warning("Room type form validation failed")
             logger.info(f"Form errors: {self.errors}")
         return cleaned_data
+    
     room_type_code = forms.CharField(max_length=3)
     room_type_name = forms.CharField(max_length=50)
     price =  forms.NumberInput()
@@ -432,11 +450,11 @@ class RoomTypeForm(forms.ModelForm):
         widgets = {
             'room_type_code': forms.TextInput(attrs={'placeholder': 'Code (e.g., SI, DO)', 'class': 'form-control'}),
             'room_type_name': forms.TextInput(attrs={'placeholder': 'Room Type Name (e.g., Suite)', 'class': 'form-control'}),
-            'price': forms.NumberInput(attrs={'placeholder': 'Price', 'class': 'form-control', 'step': '0.50'}),
+            'price': forms.NumberInput(attrs={'placeholder': '100.00', 'class': 'form-control', 'step': '0.50'}),
             'deluxe': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'bath': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'separate_shower': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'maximum_guests': forms.NumberInput(attrs={'placeholder': 'Maximum Guests', 'class': 'form-control', 'min': 1}),
+            'maximum_guests': forms.NumberInput(attrs={'placeholder': '1', 'class': 'form-control', 'min': 1}),
         }
         labels = {
             'room_type_code': 'Room Type Code',
