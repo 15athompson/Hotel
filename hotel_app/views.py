@@ -21,7 +21,6 @@ Each view function is responsible for:
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.views.decorators.http import require_safe
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -48,7 +47,6 @@ logger = logging.getLogger(__name__)
 
 # Authentication Views
 
-@require_safe
 def login_view(request):
     """
     Handle user authentication and login.
@@ -93,7 +91,6 @@ def login_view(request):
 
 
 @login_required
-@require_safe
 def logout_view(request):
     """
     Handle user logout.
@@ -116,7 +113,6 @@ def logout_view(request):
 # Home Page View
 
 @login_required
-@require_safe
 def home_view(request):
     """
     Display the main dashboard/home page of the hotel management system.
@@ -143,7 +139,6 @@ def home_view(request):
 # Guest Management Views
 
 @login_required
-@require_safe
 def guest_create_view(request):
     """
     Create a new guest record in the system.
@@ -192,7 +187,6 @@ def guest_create_view(request):
 
 
 @login_required
-@require_safe
 def guest_list_view(request):
     """
     Display a filterable list of all guests with validation.
@@ -237,7 +231,6 @@ def guest_list_view(request):
 
 
 @login_required
-@require_safe
 def guest_update_view(request, guest_id):
     """
     Update an existing guest's information.
@@ -287,7 +280,6 @@ def guest_update_view(request, guest_id):
 
 
 @login_required
-@require_safe
 def guest_delete_view(request, guest_id):
     """
     Delete a guest record from the system.
@@ -326,7 +318,6 @@ def guest_delete_view(request, guest_id):
 # Room Availability Management Views
 
 @login_required
-@require_safe
 def available_rooms_list_view(request):
     """
     Display a list of available rooms based on search criteria.
@@ -408,7 +399,6 @@ def available_rooms_list_view(request):
 
 
 @login_required
-@require_safe
 def available_rooms_reserve_view(request, room_number):
     """
     Initiate the room reservation process.
@@ -433,7 +423,6 @@ def available_rooms_reserve_view(request, room_number):
 
 
 @login_required
-@require_safe
 def available_rooms_guest_selection_view(request):
     """
     Display guest selection interface for room reservation.
@@ -474,7 +463,6 @@ def available_rooms_guest_selection_view(request):
 # Reservation Management Views
 
 @login_required
-@require_safe
 def reservation_create_view(request, guest_id):
     """
     Create a new reservation for a specific guest.
@@ -576,7 +564,6 @@ def reservation_create_view(request, guest_id):
 
 
 @login_required
-@require_safe
 def reservation_confirmed_view(request, reservation_id):
     """
     Display confirmation page for a successful reservation.
@@ -607,7 +594,6 @@ def reservation_confirmed_view(request, reservation_id):
 
 
 @login_required
-@require_safe
 def reservation_list_view(request):
     """
     Display a filterable list of all reservations.
@@ -722,7 +708,6 @@ def reservation_list_view(request):
 
 
 @login_required
-@require_safe
 def reservation_update_view(request, reservation_id):
     """
     Update an existing reservation or change its status.
@@ -800,7 +785,6 @@ def reservation_update_view(request, reservation_id):
 
 
 @login_required
-@require_safe
 def reservation_delete_view(request, reservation_id):
     """
     Delete an existing reservation.
@@ -834,7 +818,6 @@ def reservation_delete_view(request, reservation_id):
 # Room Management Views
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_create_view(request):
     """
@@ -879,7 +862,6 @@ def room_create_view(request):
 
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_list_view(request):
     """
@@ -918,7 +900,6 @@ def room_list_view(request):
 
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_update_view(request, room_number):
     """
@@ -982,7 +963,6 @@ def room_update_view(request, room_number):
 
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_delete_view(request, room_number):
     """
@@ -1027,7 +1007,6 @@ def room_delete_view(request, room_number):
 # Room Type Management Views
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_type_create_view(request):
     """
@@ -1083,7 +1062,6 @@ def room_type_create_view(request):
 
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_type_list_view(request):
     """
@@ -1118,7 +1096,6 @@ def room_type_list_view(request):
     return render(request, 'room_type_list.html', context)
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_type_update_view(request, room_type_code):
     """
@@ -1185,7 +1162,6 @@ def room_type_update_view(request, room_type_code):
 
 
 @login_required
-@require_safe
 @user_passes_test(lambda user: user.groups.filter(name='Manager').exists())
 def room_type_delete_view(request, room_type_code):
     """
@@ -1233,7 +1209,6 @@ def room_type_delete_view(request, room_type_code):
 # Rest API suppport for each of the models
 #
 @api_view(['GET'])
-@require_safe
 def api_root(request, format=None):
     print("api_root was called!")  # Debugging line
     return Response({
