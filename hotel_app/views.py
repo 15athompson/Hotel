@@ -20,7 +20,8 @@ Each view function is responsible for:
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test, require_safe
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_safe
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.utils import timezone
