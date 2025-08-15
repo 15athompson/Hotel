@@ -27,7 +27,7 @@ This full-stack web application addresses real-world challenges in the hospitali
 - **Data Validation**: Comprehensive input validation and business rule enforcement
 - **Audit Logging**: Detailed operation tracking for monitoring and compliance
 
-## 🛠 Technology Stack
+## Technology Stack
 
 - **Backend**: Python 3.x, Django 4.x
 - **Database**: SQLite (development), PostgreSQL ready
