@@ -312,3 +312,10 @@ For questions, issues, or contributions:
 
 ---
 
+## Screenshots
+
+[See Appendix A - User Acceptance Tests - in testing.pdf]
+
+
+
+
