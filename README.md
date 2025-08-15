@@ -318,6 +318,7 @@ For questions, issues, or contributions:
 
 <img width="1283" height="599" alt="image" src="https://github.com/user-attachments/assets/5933512a-7396-40e2-8f77-6392f43f9bc3" />
 
+<img width="1280" height="737" alt="image" src="https://github.com/user-attachments/assets/188fc310-c9e9-42e9-9063-fdc243f620bf" />
 
 
 
