@@ -4,11 +4,11 @@
 
 A comprehensive Django-based web application designed to streamline hotel operations, from guest management to room reservations and staff workflows.
 
-## 🏨 Overview
+## Overview
 
 This full-stack web application addresses real-world challenges in the hospitality industry by digitizing manual processes and providing an integrated platform for hotel management. The system supports multiple user roles and provides intuitive interfaces for daily hotel operations.
 
-## ✨ Features
+## Features
 
 ### Core Functionality
 - **Guest Management**: Complete guest registration, search, and profile management
@@ -36,7 +36,7 @@ This full-stack web application addresses real-world challenges in the hospitali
 - **Authentication**: Django's built-in authentication system
 - **Validation**: Custom validators with regex patterns
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -93,7 +93,7 @@ This full-stack web application addresses real-world challenges in the hospitali
    - Admin panel: http://localhost:8000/admin
    - API root: http://localhost:8000/api/
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 hotel_management_system/
@@ -113,7 +113,7 @@ hotel_management_system/
 └── README.md             # This file
 ```
 
-## 👥 User Management
+## User Management
 
 ### Setting Up User Roles
 
@@ -130,7 +130,7 @@ hotel_management_system/
 - **All authenticated users**: Guest and reservation management
 - **Manager group**: Full access including room and room type management
 
-## 🔧 Configuration
+## Configuration
 
 ### Database Configuration
 For production, update `settings.py` to use PostgreSQL:
@@ -156,7 +156,7 @@ DEBUG=False
 DATABASE_URL=postgresql://user:pass@localhost/hotel_db
 ```
 
-## 📚 API Documentation
+## API Documentation
 
 ### Authentication
 The API supports both session and basic authentication:
@@ -193,7 +193,7 @@ curl -X POST http://localhost:8000/api/guest/ \
   }'
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Run Tests
 ```bash
@@ -207,7 +207,7 @@ python manage.py test hotel_app
 - API endpoints and authentication
 - Filter and search functionality
 
-## 🔒 Security Features
+## Security Features
 
 - **Authentication Required**: All views require user login
 - **Role-Based Access**: Manager permissions for sensitive operations
@@ -216,7 +216,7 @@ python manage.py test hotel_app
 - **XSS Protection**: Django template auto-escaping
 - **CSRF Protection**: Built-in Django CSRF middleware
 
-## 🚀 Deployment
+## Deployment
 
 ### Development
 Already configured for development with SQLite and DEBUG=True.
@@ -240,7 +240,7 @@ EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 ```
 
-## 🤝 Contributing
+## Contributing
 
 ### Development Workflow
 1. Fork the repository
@@ -256,11 +256,11 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 - Include tests for new functionality
 - Update documentation as needed
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -284,14 +284,14 @@ python manage.py collectstatic
 python manage.py runserver 8001
 ```
 
-## 📞 Support
+## Support
 
 For questions, issues, or contributions:
 - Create an issue on GitHub
 - Review existing documentation
 - Check the Django documentation for framework-specific questions
 
-## 🎯 Roadmap
+## Roadmap
 
 ### Planned Features
 - [ ] Mobile responsive design improvements
