@@ -320,6 +320,7 @@ For questions, issues, or contributions:
 
 <img width="1280" height="737" alt="image" src="https://github.com/user-attachments/assets/188fc310-c9e9-42e9-9063-fdc243f620bf" />
 
+<img width="1297" height="593" alt="image" src="https://github.com/user-attachments/assets/d8f93223-8257-4cd2-995d-21e2bf088371" />
 
 
 
