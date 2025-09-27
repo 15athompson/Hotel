@@ -314,7 +314,6 @@ For questions, issues, or contributions:
 
 ## Screenshots
 
-[See Appendix A - User Acceptance Tests - testing.pdf]
 
 <img width="1283" height="599" alt="image" src="https://github.com/user-attachments/assets/5933512a-7396-40e2-8f77-6392f43f9bc3" />
 
